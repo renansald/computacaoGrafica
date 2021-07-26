@@ -16,7 +16,7 @@
 //position 10 Left Elbow Z
 //position 11 Right Elbow Z
 
-int bodyPositions[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int bodyPositions[13];
 
 void rotateIn360(int *ref, int value)
 {
@@ -118,6 +118,12 @@ void keyboardEvent(unsigned char key, int x, int y)
   case 'I':
     rotateBetweenAngles(&bodyPositions[8], -5, -90, 90);
     break;
+  case 'o':
+    rotateBetweenAngles(&bodyPositions[12], 5, -60, 60);
+    break;
+  case 'O':
+    rotateBetweenAngles(&bodyPositions[12], -5, -60, 60);
+    break;
   default:
     break;
   }
@@ -145,10 +151,21 @@ void printDot(float r, float g, float b)
   glColor3f(0, 0, 1);
 }
 
+void printBase()
+{
+  glTranslatef(0, -4, 0);
+  printDot(0, 0, 0);
+  glutWireSphere(3, 10, 10);
+  glTranslatef(0, 4, 0);
+}
+
 void printBody()
 {
+  // glPushMatrix();
   printDot(0, 0, 0);
+  glRotatef((GLfloat)bodyPositions[12], 0, 1, 0);
   glutWireSphere(2, 10, 10);
+  // glPopMatrix();
 }
 
 void printHeader()
@@ -159,7 +176,7 @@ void printHeader()
   printDot(0, 0, 0);
   glutWireSphere(1, 10, 10);
   glTranslatef(0.5, 0, 1);
-  glColor3f(1, 0, 0);
+  glColor3f(1, 0, 1);
   glutSolidSphere(0.25, 10, 10);
   glTranslatef(-1, 0, 0);
   glutSolidSphere(0.25, 10, 10);
@@ -188,7 +205,6 @@ void printForearm(int elbow, int ref)
   printPart(1, 0.3, 0.3);
   glTranslatef((0.5 * ref), 0, 0);
   glutWireSphere(0.20, 10, 10);
-  // glTranslatef(((ref * -1) * 1.25), 0, 0);
   glPopMatrix();
 }
 
@@ -204,7 +220,6 @@ void printArm(int shouldX, int shouldY, int shouldZ, int elbow, int ref)
   glTranslatef((1 * ref), 0, 0);
   printPart(2, 0.6, 0.6);
   printForearm(elbow, ref);
-  // glTranslated(((ref * -1) * 1), 0, 0);
   glPopMatrix();
 }
 
@@ -215,6 +230,7 @@ void printDraw()
   glRotatef((GLfloat)bodyPositions[1], 1, 0, 0);
   glRotatef((GLfloat)bodyPositions[2], 0, 1, 0);
   glRotatef((GLfloat)bodyPositions[3], 0, 0, 1);
+  printBase();
   printBody();
   printHeader();
   printArm(bodyPositions[4], bodyPositions[5],
