@@ -262,6 +262,7 @@ void draw(void)
     glScalef(2.0, 2.0, 2.0);
     BoatSolid();
     glPopMatrix();
+
     glPushMatrix();
     glColor3f(1.0, 0.0, 0.0);
     glTranslatef(posXMeteoro, posYMeteoro, posZMeteoro);
